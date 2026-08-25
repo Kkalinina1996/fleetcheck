@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useSearchParams } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
@@ -21,6 +22,7 @@ import PrivateVehicleOk from './pages/PrivateVehicleOk/PrivateVehicleOk'
 import ReportIssue from './pages/ReportIssue/ReportIssue'
 import VehicleCheck from './pages/VehicleCheck/VehicleCheck'
 import Welcome from './pages/Welcome/Welcome'
+import { restoreCompanySession } from './services/sessionService'
 
 function HomeRoute() {
   const [searchParams] = useSearchParams()
@@ -28,6 +30,8 @@ function HomeRoute() {
 }
 
 function App() {
+  const [, setAuthVersion] = useState(0)
+  useEffect(() => { restoreCompanySession(); const onAuthExpired = () => setAuthVersion((version) => version + 1); window.addEventListener('fleetcheck-auth-expired', onAuthExpired); return () => window.removeEventListener('fleetcheck-auth-expired', onAuthExpired) }, [])
   return (
     <LanguageProvider>
       <BrowserRouter>
