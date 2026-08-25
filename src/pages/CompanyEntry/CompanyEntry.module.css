@@ -1,0 +1,14 @@
+.page { min-height: 100vh; background: #eef3f7; }
+.main { display: grid; min-height: calc(100vh - 70px); padding: 30px 20px 50px; place-items: center; }
+.card { width: min(100%, 620px); padding: clamp(30px, 7vw, 52px); border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
+.card h1 { margin: 0; color: #102a43; font-size: clamp(32px, 5vw, 45px); letter-spacing: -.05em; }
+.card > p { margin: 13px 0 29px; color: #64748b; font-size: 18px; line-height: 1.5; }
+.actions { display: grid; gap: 12px; }
+.actions a { display: grid; gap: 5px; min-height: 73px; padding: 16px 18px; border: 2px solid #c7d5e0; border-radius: 13px; color: #173956; background: #fff; text-decoration: none; }
+.actions a:hover { border-color: #19a974; background: #f5fbf8; }
+.actions strong { font-size: 15px; letter-spacing: .04em; }
+.actions span { color: #64748b; font-size: 14px; }
+.actions .primary { border-color: #19a974; background: #19a974; color: #fff; }
+.actions .primary:hover { background: #12845a; }
+.actions .primary span { color: #e7fff3; }
+@media (max-width: 420px) { .main { padding: 20px 15px 40px; }.card { border-radius: 18px; } }

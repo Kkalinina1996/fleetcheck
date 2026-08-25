@@ -1,0 +1,24 @@
+.page { min-height: 100vh; background: #eef3f7; }
+.main { display: grid; min-height: calc(100vh - 70px); padding: 30px 20px 50px; place-items: center; }
+.card, .success { width: min(100%, 590px); padding: clamp(28px, 6vw, 46px); border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
+.card h1, .success h1, .success h2 { margin: 0; color: #102a43; letter-spacing: -.04em; }
+.card h1, .success h1 { font-size: clamp(30px, 5vw, 43px); }
+.subtitle { margin: 13px 0 0; color: #64748b; font-size: 18px; line-height: 1.5; }
+.companyName { margin: 21px 0 0; color: #0d7650; font-size: 18px; font-weight: 900; }
+.card form { display: grid; gap: 18px; margin-top: 28px; }
+.card label { display: grid; gap: 8px; color: #294861; font-weight: 800; }
+.card input, .card select { min-height: 58px; padding: 12px 15px; border: 2px solid #c7d5e0; border-radius: 12px; background: #fff; color: #102a43; font: inherit; font-size: 17px; outline-color: #19a974; }
+.card input::placeholder { color: #8ba0b0; }
+.primary, .secondary { min-height: 60px; border-radius: 12px; font-size: 14px; font-weight: 900; letter-spacing: .05em; }
+.primary { border: 0; background: #19a974; color: #fff; }
+.primary:hover { background: #12845a; }
+.error { margin: 0; color: #b42318; font-weight: 800; }
+.success { text-align: center; }
+.success > div { display: grid; width: 66px; height: 66px; margin: 0 auto 18px; place-items: center; border-radius: 50%; background: #dff6ec; color: #0a8c5b; font-size: 36px; font-weight: 900; }
+.success h2 { margin-top: 22px; font-size: 25px; }
+.plate { margin: 8px 0 20px; color: #08734f; font-size: 21px; font-weight: 900; letter-spacing: .04em; }
+.success > p:not(.plate) { margin: 0; color: #64748b; line-height: 1.5; }
+.successActions { display: grid; gap: 11px; margin-top: 30px; }
+.secondary { border: 2px solid #19a974; background: #fff; color: #0d865a; }
+@media (min-width: 620px) { .successActions { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .main { padding: 20px 15px 40px; }.card, .success { border-radius: 18px; } }

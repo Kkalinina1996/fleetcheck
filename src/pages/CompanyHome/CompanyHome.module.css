@@ -1,0 +1,8 @@
+.page { min-height: 100vh; background: #eef3f7; }
+.main { display: grid; min-height: calc(100vh - 70px); padding: 30px 20px; place-items: center; }
+.card { width: min(100%, 600px); padding: clamp(30px, 7vw, 52px); border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); text-align: center; }
+.card p { margin: 0; color: #0d7650; font-size: 18px; font-weight: 900; }
+.card h1 { margin: 10px 0 32px; color: #102a43; font-size: clamp(34px, 6vw, 48px); letter-spacing: -.05em; }
+.actions { display: grid; gap: 12px; }
+.actions button { min-height: 62px; border: 2px solid #c7d5e0; border-radius: 12px; background: #f8fafb; color: #64748b; font-weight: 900; letter-spacing: .05em; }
+.actions button:disabled { cursor: not-allowed; }
