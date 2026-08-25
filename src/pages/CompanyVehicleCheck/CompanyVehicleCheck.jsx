@@ -1,20 +1,11 @@
-import { Link, useParams } from 'react-router-dom'
+import { useRef, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import VehicleNotFound from '../../components/VehicleNotFound/VehicleNotFound'
 import { useLanguage } from '../../context/LanguageContext'
-import { getVehicleReports } from '../../services/reportService'
-import { getDriverSession } from '../../services/sessionService'
+import { createReport, getActiveVehicleIssues } from '../../services/reportService'
+import { clearDriverSession, getDriverSession } from '../../services/sessionService'
 import { getVehicleById } from '../../services/vehicleService'
 import styles from './CompanyVehicleCheck.module.css'
-
-function CompanyVehicleCheck() {
-  const { vehicleId } = useParams()
-  const { t } = useLanguage()
-  const vehicle = getVehicleById(vehicleId)
-  const session = getDriverSession()
-  const issues = vehicle ? getVehicleReports(vehicle.id).filter((report) => report.type === 'ISSUE' && report.status === 'OPEN') : []
-  if (!vehicle || vehicle.ownerType !== 'company') return <VehicleNotFound />
-  return <div className={styles.page}><Header /><main className={styles.main}><Link className={styles.back} to="/company/check">{t('back')}</Link><section className={styles.vehicleInfo}><h1>{vehicle.brand} {vehicle.model}</h1><p>{vehicle.plateNumber}</p><small>{t('employee')}: {session?.employeeName || ''}</small></section><section className={styles.card}><h2>{t('knownIssues')}</h2>{issues.length === 0 ? <p className={styles.empty}>{t('noKnownIssues')}</p> : <div className={styles.list}>{issues.map((issue) => <article className={styles.issue} key={issue.id || issue.createdAt}><strong>{t(issue.issueType)}</strong>{issue.description && <p>{issue.description}</p>}{issue.photo && <img src={issue.photo} alt={t(issue.issueType)} />}</article>)}</div>}<button className={styles.continue} type="button" disabled>{t('continueCheck')}</button></section></main></div>
-}
-
+function CompanyVehicleCheck(){const{vehicleId}=useParams();const{t}=useLanguage();const navigate=useNavigate();const vehicle=getVehicleById(vehicleId);const session=getDriverSession();const issues=vehicle?getActiveVehicleIssues(vehicle.id):[];const[seen,setSeen]=useState(!issues.length);const[stage,setStage]=useState('issues');const[photo,setPhoto]=useState('');const[video,setVideo]=useState('');const photoRef=useRef(null);const videoRef=useRef(null);if(!vehicle||vehicle.ownerType!=='company')return <VehicleNotFound/>;const select=(event,setValue)=>{const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>setValue(reader.result);reader.readAsDataURL(file)};const saveOk=()=>{createReport({companyId:vehicle.companyId,vehicleId:vehicle.id,plateNumber:vehicle.plateNumber,employeeName:session?.employeeName||'',type:'VEHICLE_OK',status:'OK',photo:photo||null,video:video||null});setStage('complete')};const finishCheck=()=>{clearDriverSession();navigate('/company/check')};return <div className={styles.page}><Header/><main className={styles.main}><Link className={styles.back} to="/company/check">{t('back')}</Link><section className={styles.vehicleInfo}><h1>{vehicle.brand} {vehicle.model}</h1><p>{vehicle.plateNumber}</p><small>{t('employee')}: {session?.employeeName||''}</small></section>{stage==='issues'&&<section className={styles.card}><h2>{t('knownIssues')}</h2>{issues.length?<div className={styles.list}>{issues.map((issue)=><article className={styles.issue} key={issue.id}><strong>{t(issue.issueType)}</strong><p>{issue.description}</p></article>)}</div>:<p className={styles.empty}>{t('noKnownIssues')}</p>}{issues.length>0&&<button className={styles.continue} onClick={()=>setSeen(true)}>{t('seenThese')}</button>}<button className={styles.continue} disabled={!seen} onClick={()=>setStage('inspect')}>{t('continueCheck')}</button></section>}{stage==='inspect'&&<section className={styles.card}><h2>{t('vehicleConditionQuestion')}</h2><div className={styles.media}><label>{t('addPhoto')}<input ref={photoRef} type="file" accept="image/*" capture="environment" onChange={(event)=>select(event,setPhoto)}/></label><label>{t('addVideo')}<input ref={videoRef} type="file" accept="video/*" capture="environment" onChange={(event)=>select(event,setVideo)}/></label></div>{photo&&<img className={styles.preview} src={photo} alt={t('photo')}/>} {video&&<video className={styles.preview} controls src={video}/>}<button className={styles.continue} onClick={saveOk}>{t('everythingOk')}</button><button className={styles.report} onClick={()=>navigate(`/company/check/${vehicle.id}/report`)}>{t('reportProblem')}</button></section>}{stage==='complete'&&<section className={styles.card}><h2>{t('checkComplete')}</h2><p>{t('vehicle')}: {vehicle.plateNumber}<br/>{t('employee')}: {session?.employeeName||''}</p><button className={styles.continue} onClick={finishCheck}>{t('finishCheck')}</button><button className={styles.report} onClick={()=>navigate('/company/home')}>{t('returnToCompanyHome')}</button></section>}</main></div>}
 export default CompanyVehicleCheck

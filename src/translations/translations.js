@@ -86,4 +86,24 @@ Object.assign(de, { companyCheckHint: 'Geben Sie die Fahrzeugnummer und Ihren Na
 Object.assign(ru, { companyCheckHint: 'Введите номер автомобиля и ваше имя, чтобы продолжить.', companyVehicleNotFoundHint: 'Этот автомобиль не зарегистрирован в FleetCheck. Обратитесь к администратору вашей компании.', noKnownIssues: 'Нет известных проблем', employee: 'Сотрудник', continueCheck: 'ПРОДОЛЖИТЬ ПРОВЕРКУ' })
 Object.assign(lv, { companyCheckHint: 'Ievadiet transportlīdzekļa numuru un savu vārdu, lai turpinātu.', companyVehicleNotFoundHint: 'Šis transportlīdzeklis nav reģistrēts FleetCheck. Lūdzu, sazinieties ar uzņēmuma administratoru.', noKnownIssues: 'Nav zināmu problēmu', employee: 'Darbinieks', continueCheck: 'TURPINĀT PĀRBAUDI' })
 
+Object.assign(en, { accident: 'Accident', save: 'SAVE', companyName: 'Company Name', adminName: 'Admin Name', confirmPassword: 'Confirm Password', phone: 'Phone', passwordsDoNotMatch: 'Passwords do not match.', adminDashboard: 'ADMIN DASHBOARD', editVehicle: 'EDIT VEHICLE', seenThese: 'I HAVE SEEN THESE', vehicleConditionQuestion: 'Is the vehicle condition OK?', checkComplete: 'CHECK COMPLETE', finish: 'FINISH', returnToCompanyHome: 'RETURN TO COMPANY HOME', notifications: 'Notifications', markAllRead: 'Mark all as read', noNotifications: 'No notifications' })
+Object.assign(de, { accident: 'Unfall', save: 'SPEICHERN', companyName: 'Unternehmensname', adminName: 'Administratorname', confirmPassword: 'Passwort bestätigen', phone: 'Telefon', passwordsDoNotMatch: 'Die Passwörter stimmen nicht überein.', adminDashboard: 'ADMIN-DASHBOARD', editVehicle: 'FAHRZEUG BEARBEITEN', seenThese: 'ICH HABE SIE GESEHEN', vehicleConditionQuestion: 'Ist der Fahrzeugzustand in Ordnung?', checkComplete: 'CHECK ABGESCHLOSSEN', finish: 'BEENDEN', returnToCompanyHome: 'ZURÜCK ZUR UNTERNEHMENSSTARTSEITE', notifications: 'Benachrichtigungen', markAllRead: 'Alle als gelesen markieren', noNotifications: 'Keine Benachrichtigungen' })
+Object.assign(ru, { accident: 'Авария', save: 'СОХРАНИТЬ', companyName: 'Название компании', adminName: 'Имя администратора', confirmPassword: 'Подтвердите пароль', phone: 'Телефон', passwordsDoNotMatch: 'Пароли не совпадают.', adminDashboard: 'ПАНЕЛЬ АДМИНИСТРАТОРА', editVehicle: 'РЕДАКТИРОВАТЬ АВТОМОБИЛЬ', seenThese: 'Я ОЗНАКОМИЛСЯ', vehicleConditionQuestion: 'Автомобиль в порядке?', checkComplete: 'ПРОВЕРКА ЗАВЕРШЕНА', finish: 'ЗАВЕРШИТЬ', returnToCompanyHome: 'ВЕРНУТЬСЯ НА ГЛАВНУЮ КОМПАНИИ', notifications: 'Уведомления', markAllRead: 'Отметить все прочитанными', noNotifications: 'Нет уведомлений' })
+Object.assign(lv, { accident: 'Negadījums', save: 'SAGLABĀT', companyName: 'Uzņēmuma nosaukums', adminName: 'Administratora vārds', confirmPassword: 'Apstipriniet paroli', phone: 'Tālrunis', passwordsDoNotMatch: 'Paroles nesakrīt.', adminDashboard: 'ADMINISTRATORA PANELIS', editVehicle: 'REDIĢĒT TRANSPORTLĪDZEKLI', seenThese: 'ES TOS ESMU REDZĒJIS', vehicleConditionQuestion: 'Vai transportlīdzekļa stāvoklis ir kārtībā?', checkComplete: 'PĀRBAUDE PABEIGTA', finish: 'PABEIGT', returnToCompanyHome: 'ATGRIEZTIES UZŅĒMUMA SĀKUMLAPĀ', notifications: 'Paziņojumi', markAllRead: 'Atzīmēt visus kā lasītus', noNotifications: 'Nav paziņojumu' })
+
+Object.assign(en, { signOut: 'SIGN OUT', finishCheck: 'FINISH CHECK' })
+Object.assign(de, { signOut: 'Abmelden', finishCheck: 'Check beenden' })
+Object.assign(ru, { signOut: 'ВЫЙТИ', finishCheck: 'ЗАВЕРШИТЬ ПРОВЕРКУ' })
+Object.assign(lv, { signOut: 'IZRAKSTĪTIES', finishCheck: 'PABEIGT PĀRBAUDI' })
+
+Object.assign(en, { noAccount: "Don't have an account?", backToFleetCheck: 'Back to FleetCheck' })
+Object.assign(de, { noAccount: 'Noch kein Konto?', backToFleetCheck: 'Zurück zu FleetCheck' })
+Object.assign(ru, { noAccount: 'Нет аккаунта?', backToFleetCheck: 'Назад в FleetCheck' })
+Object.assign(lv, { noAccount: 'Vēl nav konta?', backToFleetCheck: 'Atpakaļ uz FleetCheck' })
+
+Object.assign(en, { noVehiclesAdded: 'No vehicles added yet.', addFirstVehicleWhenReady: "You can add your first vehicle when you're ready.", backToCompanyHome: 'Back to Company Home', goToCompanyHome: 'GO TO COMPANY HOME' })
+Object.assign(de, { noVehiclesAdded: 'Noch keine Fahrzeuge hinzugefügt.', addFirstVehicleWhenReady: 'Sie können Ihr erstes Fahrzeug hinzufügen, wenn Sie bereit sind.', backToCompanyHome: 'Zurück zur Unternehmensstartseite', goToCompanyHome: 'ZUR UNTERNEHMENSSTARTSEITE' })
+Object.assign(ru, { noVehiclesAdded: 'Автомобили еще не добавлены.', addFirstVehicleWhenReady: 'Добавьте первый автомобиль, когда будете готовы.', backToCompanyHome: 'Назад на главную компании', goToCompanyHome: 'НА ГЛАВНУЮ КОМПАНИИ' })
+Object.assign(lv, { noVehiclesAdded: 'Vēl nav pievienotu transportlīdzekļu.', addFirstVehicleWhenReady: 'Pievienojiet pirmo transportlīdzekli, kad esat gatavs.', backToCompanyHome: 'Atpakaļ uz uzņēmuma sākumlapu', goToCompanyHome: 'UZ UZŅĒMUMA SĀKUMLAPU' })
+
 export const translations = { de, en, ru, lv }

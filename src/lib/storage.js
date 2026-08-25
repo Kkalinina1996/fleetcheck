@@ -5,10 +5,14 @@ const VEHICLES_KEY = 'fleetcheck_vehicles'
 const DRIVER_SESSION_KEY = 'fleetcheck_checkin'
 const ADMIN_SESSION_KEY = 'fleetcheck_admin'
 const COMPANY_SESSION_KEY = 'fleetcheck_company'
+const COMPANY_PROFILE_KEY = 'fleetcheck_company_profile'
 const NOTIFICATIONS_KEY = 'fleetcheck_notifications'
 
 export const getReports = () => JSON.parse(localStorage.getItem(REPORTS_KEY) || '[]')
-export const saveReport = (report) => localStorage.setItem(REPORTS_KEY, JSON.stringify([report, ...getReports()]))
+export const saveReport = (report) => {
+  localStorage.setItem(REPORTS_KEY, JSON.stringify([report, ...getReports()]))
+  return report
+}
 export const updateReportStatus = (reportId, status) => {
   const reports = getReports().map((report) => report.id === reportId ? { ...report, status } : report)
   localStorage.setItem(REPORTS_KEY, JSON.stringify(reports))
@@ -33,6 +37,11 @@ export const addVehicle = ({ plateNumber, driverName, tlNumber, brand, model, ye
   localStorage.setItem(VEHICLES_KEY, JSON.stringify([...getAddedVehicles(), vehicle]))
   return vehicle
 }
+export const updateVehicle = (vehicleId, updates) => {
+  const vehicles = getAddedVehicles().map((vehicle) => vehicle.id === vehicleId ? { ...vehicle, ...updates } : vehicle)
+  localStorage.setItem(VEHICLES_KEY, JSON.stringify(vehicles))
+  return getVehicleById(vehicleId)
+}
 
 export const getVehicleReports = (vehicleId) => getReports().filter((report) => String(report.vehicleId).toLowerCase() === vehicleId.toLowerCase())
 export const getActiveVehicleIssues = (vehicleId) => getVehicleReports(vehicleId).filter((report) => ['OPEN', 'IN_REPAIR', 'IN REPAIR'].includes(report.status))
@@ -45,7 +54,7 @@ export const setAdminSession = () => localStorage.setItem(ADMIN_SESSION_KEY, 'tr
 export const clearAdminSession = () => localStorage.removeItem(ADMIN_SESSION_KEY)
 export const hasAdminSession = () => localStorage.getItem(ADMIN_SESSION_KEY) === 'true'
 export const getCompanySession = () => JSON.parse(localStorage.getItem(COMPANY_SESSION_KEY) || 'null')
-export const saveCompanySession = (session) => localStorage.setItem(COMPANY_SESSION_KEY, JSON.stringify(session))
+export const saveCompanySession = (session) => { localStorage.setItem(COMPANY_PROFILE_KEY, JSON.stringify(session)); localStorage.setItem(COMPANY_SESSION_KEY, JSON.stringify(session)) }
 export const clearCompanySession = () => localStorage.removeItem(COMPANY_SESSION_KEY)
 export const createReportDate = () => { const now = new Date(); return { date: now.toLocaleDateString(), time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), timestamp: now.toISOString() } }
 

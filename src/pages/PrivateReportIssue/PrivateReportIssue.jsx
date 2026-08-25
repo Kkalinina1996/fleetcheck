@@ -7,7 +7,7 @@ import { createReport } from '../../services/reportService'
 import { getVehicleById } from '../../services/vehicleService'
 import styles from './PrivateReportIssue.module.css'
 
-const categories = ['tire', 'fuel', 'adBlue', 'oilService', 'lights', 'damage', 'warningLight', 'other']
+const categories = ['tire', 'fuel', 'adBlue', 'oilService', 'lights', 'damage', 'warningLight', 'accident', 'other']
 
 function fileToDataUrl(file, setValue) {
   const reader = new FileReader()

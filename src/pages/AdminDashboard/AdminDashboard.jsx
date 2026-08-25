@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import { useLanguage } from '../../context/LanguageContext'
 import { clearAdminSession, getActiveVehicleIssues, getReports, getVehicleReports, getVehicles, hasAdminSession, updateReportStatus } from '../../lib/storage'
+import { getCompanySession, isCompanyLoggedIn } from '../../services/sessionService'
 import styles from './AdminDashboard.module.css'
 
 const statusKey = (status) => status === 'IN_REPAIR' || status === 'IN REPAIR' ? 'inRepair' : status.toLowerCase()
@@ -11,9 +12,12 @@ function AdminDashboard() {
   const { t } = useLanguage()
   const navigate = useNavigate()
   const [depotFilter, setDepotFilter] = useState('ALL')
-  if (!hasAdminSession()) return <Navigate to="/admin" replace />
-  const vehicles = getVehicles()
-  const reports = getReports().filter((report) => depotFilter === 'ALL' || report.depot === depotFilter)
+  const company = getCompanySession()
+  const companyId = company?.companyId || company?.id
+  const companyAccess = isCompanyLoggedIn()
+  if (!hasAdminSession() && !companyAccess) return <Navigate to="/admin" replace />
+  const vehicles = getVehicles().filter((vehicle) => !companyAccess || vehicle.companyId === companyId)
+  const reports = getReports().filter((report) => (!companyAccess || report.companyId === companyId) && (depotFilter === 'ALL' || report.depot === depotFilter))
   const openIssues = reports.filter((report) => report.status === 'OPEN')
   const repairIssues = reports.filter((report) => ['IN_REPAIR', 'IN REPAIR'].includes(report.status))
   const okVehicles = vehicles.filter((vehicle) => !getActiveVehicleIssues(vehicle.id).length).length
