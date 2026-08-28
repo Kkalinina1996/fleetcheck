@@ -20,6 +20,19 @@ const mediaRules = {
 }
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
+function logReportDatabaseError(operation, error, context) {
+  // Deliberately excludes request headers and bodies so credentials and media are never logged.
+  console.error('Reports API database error', {
+    operation,
+    companyId: context.companyId ?? null,
+    vehicleId: context.vehicleId ?? null,
+    reportId: context.reportId ?? null,
+    code: error?.code ?? null,
+    message: error?.message ?? 'Unknown Supabase error',
+    hint: error?.hint ?? null,
+  })
+}
+
 async function getCompanyVehicle(vehicleId, companyId) {
   const { data, error } = await getSupabaseAdminClient().from('vehicles').select('id, company_id, plate_number').eq('id', vehicleId).eq('company_id', companyId).maybeSingle()
   if (error) throw error
@@ -41,7 +54,14 @@ reportRoutes.post('/upload', requireAuth, requireCompanyMember, express.raw({ ty
     const { error } = await getSupabaseAdminClient().storage.from('vehicle-reports').upload(mediaPath, req.body, { contentType: mimeType, upsert: false })
     if (error) throw error
     return res.status(201).json({ reportId, mediaPath, mediaType: mimeType.startsWith('image/') ? 'image' : 'video' })
-  } catch (error) { return next(error) }
+  } catch (error) {
+    logReportDatabaseError('upload report media', error, {
+      companyId: req.companyMembership?.company_id,
+      vehicleId,
+      reportId,
+    })
+    return next(error)
+  }
 })
 
 reportRoutes.get('/', requireAuth, requireCompanyAdmin, async (req, res, next) => {
@@ -100,7 +120,14 @@ reportRoutes.post('/', requireAuth, requireCompanyMember, async (req, res, next)
       }
     }
     return res.status(201).json({ report })
-  } catch (error) { return next(error) }
+  } catch (error) {
+    logReportDatabaseError('create report', error, {
+      companyId: req.companyMembership?.company_id,
+      vehicleId,
+      reportId: id ?? null,
+    })
+    return next(error)
+  }
 })
 
 reportRoutes.patch('/:id/status', requireAuth, requireCompanyAdmin, async (req, res, next) => {
