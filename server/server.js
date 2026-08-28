@@ -10,6 +10,7 @@ import healthRoutes from './src/routes/healthRoutes.js'
 import notificationRoutes from './src/routes/notificationRoutes.js'
 import privateRoutes from './src/routes/privateRoutes.js'
 import reportRoutes from './src/routes/reportRoutes.js'
+import reminderRoutes from './src/routes/reminderRoutes.js'
 import vehicleRoutes from './src/routes/vehicleRoutes.js'
 
 const app = express()
@@ -34,6 +35,7 @@ app.use('/api/vehicles', vehicleRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/private', privateRoutes)
+app.use('/api/reminders', reminderRoutes)
 app.use('/api/dashboard', dashboardRoutes)
 app.use(notFoundHandler)
 app.use(errorHandler)

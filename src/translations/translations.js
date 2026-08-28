@@ -141,4 +141,14 @@ Object.assign(de, { privateNameRequired: 'Bitte geben Sie Ihren Namen ein.', pri
 Object.assign(ru, { privateNameRequired: 'Введите ваше имя.', privateEmailInvalid: 'Введите действительный адрес электронной почты.', privatePasswordLength: 'Пароль должен содержать не менее 8 символов.', privateRegistrationFailed: 'Не удалось создать аккаунт. Попробуйте еще раз.', privateLoginFailed: 'Неверный email или пароль.', privateAuthenticationFailed: 'Не удалось выполнить вход. Попробуйте еще раз.', vehicleCount: 'Автомобили' })
 Object.assign(lv, { privateNameRequired: 'Lūdzu, ievadiet savu vārdu.', privateEmailInvalid: 'Lūdzu, ievadiet derīgu e-pasta adresi.', privatePasswordLength: 'Parolē jābūt vismaz 8 rakstzīmēm.', privateRegistrationFailed: 'Neizdevās izveidot kontu. Lūdzu, mēģiniet vēlreiz.', privateLoginFailed: 'E-pasta adrese vai parole nav pareiza.', privateAuthenticationFailed: 'Neizdevās pieslēgties. Lūdzu, mēģiniet vēlreiz.', vehicleCount: 'Transportlīdzekļi' })
 
+Object.assign(en,{calendar:'Calendar',reminders:'Reminders',tuv:'Technical inspection',insurance:'Insurance',service:'Service',oil_change:'Oil change',tire_change:'Tire change',upcoming:'Upcoming',overdue:'Overdue',completed:'Completed',note:'Note',addReminder:'Add reminder',markCompleted:'Mark completed',delete:'Delete'})
+Object.assign(de,{calendar:'Kalender',reminders:'Erinnerungen',tuv:'Hauptuntersuchung',insurance:'Versicherung',service:'Service',oil_change:'Ölwechsel',tire_change:'Reifenwechsel',upcoming:'Anstehend',overdue:'Überfällig',completed:'Erledigt',note:'Notiz',addReminder:'Erinnerung hinzufügen',markCompleted:'Als erledigt markieren',delete:'Löschen'})
+Object.assign(ru,{calendar:'Календарь',reminders:'Напоминания',tuv:'Техосмотр',insurance:'Страховка',service:'Сервис',oil_change:'Замена масла',tire_change:'Замена шин',upcoming:'Предстоит',overdue:'Просрочено',completed:'Завершено',note:'Примечание',addReminder:'Добавить напоминание',markCompleted:'Отметить как завершенное',delete:'Удалить'})
+Object.assign(lv,{calendar:'Kalendārs',reminders:'Atgādinājumi',tuv:'Tehniskā apskate',insurance:'Apdrošināšana',service:'Serviss',oil_change:'Eļļas maiņa',tire_change:'Riepu maiņa',upcoming:'Gaidāms',overdue:'Nokavēts',completed:'Pabeigts',note:'Piezīme',addReminder:'Pievienot atgādinājumu',markCompleted:'Atzīmēt kā pabeigtu',delete:'Dzēst'})
+
+Object.assign(en,{upcomingReminders:'Upcoming reminders',overdueReminders:'Overdue reminders'})
+Object.assign(de,{upcomingReminders:'Anstehende Erinnerungen',overdueReminders:'Überfällige Erinnerungen'})
+Object.assign(ru,{upcomingReminders:'Предстоящие напоминания',overdueReminders:'Просроченные напоминания'})
+Object.assign(lv,{upcomingReminders:'Gaidāmie atgādinājumi',overdueReminders:'Nokavētie atgādinājumi'})
+
 export const translations = { de, en, ru, lv }

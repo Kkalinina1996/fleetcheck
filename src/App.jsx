@@ -20,6 +20,7 @@ import PrivateHome from './pages/PrivateHome/PrivateHome'
 import PrivateHistory from './pages/PrivateHistory/PrivateHistory'
 import PrivateVehicleOk from './pages/PrivateVehicleOk/PrivateVehicleOk'
 import PrivateAuth from './pages/PrivateAuth/PrivateAuth'
+import Calendar from './pages/Calendar/Calendar'
 import ReportIssue from './pages/ReportIssue/ReportIssue'
 import VehicleCheck from './pages/VehicleCheck/VehicleCheck'
 import Welcome from './pages/Welcome/Welcome'
@@ -42,6 +43,8 @@ function App() {
           <Route path="/home" element={<HomeRoute />} />
           <Route path="/private/auth" element={<PrivateAuth />} />
           <Route path="/private/register" element={<PrivateAuth register />} />
+          <Route path="/private/calendar" element={<Calendar mode="private" />} />
+          <Route path="/company/calendar" element={<Calendar mode="company" />} />
           <Route path="/company" element={<CompanyEntry />} />
           <Route path="/company/check" element={<DriverManualEntry />} />
           <Route path="/company/check/:vehicleId" element={<CompanyVehicleCheck />} />
