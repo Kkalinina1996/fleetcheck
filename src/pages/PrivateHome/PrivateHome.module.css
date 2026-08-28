@@ -4,6 +4,7 @@
 .intro h1, .formCard h2, .vehicleCard h2 { margin: 0; color: #102a43; letter-spacing: -.04em; }
 .intro h1 { font-size: clamp(32px, 5vw, 46px); }
 .intro p { margin: 11px 0 0; color: #64748b; font-size: 17px; line-height: 1.5; }
+.count { margin: 0 0 16px; color: #41627b; font-weight: 800; }
 .empty, .formCard, .vehicleCard { border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
 .empty { display: grid; justify-items: center; gap: 25px; padding: clamp(36px, 8vw, 68px) 28px; }
 .emptyIcon { display: grid; width: 72px; height: 72px; place-items: center; border-radius: 20px; background: #e1f5ec; color: #0c8d60; font-size: 35px; font-weight: 900; }

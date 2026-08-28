@@ -23,6 +23,13 @@ function validateRegistration({ companyName, adminName, email, password }) {
   return null
 }
 
+function validatePrivateRegistration({ fullName, email, password }) {
+  if (!fullName?.trim()) return 'Name is required'
+  if (!emailPattern.test(email || '')) return 'A valid email address is required'
+  if (typeof password !== 'string' || password.length < 8) return 'Password must be at least 8 characters'
+  return null
+}
+
 authRoutes.post('/register-company', async (req, res, next) => {
   const validationError = validateRegistration(req.body || {})
   if (validationError) return res.status(400).json({ error: validationError })
@@ -85,6 +92,40 @@ authRoutes.post('/register-company', async (req, res, next) => {
         await getSupabaseAdminClient().auth.admin.deleteUser(createdUserId)
       } catch {
         // Cleanup is best-effort; operators can reconcile rare orphaned records.
+      }
+    }
+    return next(error)
+  }
+})
+
+authRoutes.post('/register-private', async (req, res, next) => {
+  const validationError = validatePrivateRegistration(req.body || {})
+  if (validationError) return res.status(400).json({ error: validationError })
+
+  const { fullName, email, password } = req.body
+  let createdUserId
+  try {
+    const supabase = getSupabaseAdminClient()
+    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+      email: email.trim().toLowerCase(),
+      password,
+      email_confirm: true,
+    })
+    if (authError || !authData.user) return res.status(400).json({ error: 'Unable to create private account' })
+
+    createdUserId = authData.user.id
+    const { error: profileError } = await supabase.from('profiles').insert({
+      id: createdUserId,
+      full_name: fullName.trim(),
+    })
+    if (profileError) throw profileError
+    return res.status(201).json({ user: safeUser(authData.user), profile: { id: createdUserId, fullName: fullName.trim() } })
+  } catch (error) {
+    if (createdUserId) {
+      try {
+        await getSupabaseAdminClient().auth.admin.deleteUser(createdUserId)
+      } catch {
+        // Cleanup is best-effort; operators can reconcile rare orphaned auth users.
       }
     }
     return next(error)

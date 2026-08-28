@@ -19,10 +19,11 @@ import PrivateReportIssue from './pages/PrivateReportIssue/PrivateReportIssue'
 import PrivateHome from './pages/PrivateHome/PrivateHome'
 import PrivateHistory from './pages/PrivateHistory/PrivateHistory'
 import PrivateVehicleOk from './pages/PrivateVehicleOk/PrivateVehicleOk'
+import PrivateAuth from './pages/PrivateAuth/PrivateAuth'
 import ReportIssue from './pages/ReportIssue/ReportIssue'
 import VehicleCheck from './pages/VehicleCheck/VehicleCheck'
 import Welcome from './pages/Welcome/Welcome'
-import { restoreCompanySession } from './services/sessionService'
+import { restoreCompanySession, restorePrivateSession } from './services/sessionService'
 
 function HomeRoute() {
   const [searchParams] = useSearchParams()
@@ -31,7 +32,7 @@ function HomeRoute() {
 
 function App() {
   const [, setAuthVersion] = useState(0)
-  useEffect(() => { restoreCompanySession(); const onAuthExpired = () => setAuthVersion((version) => version + 1); window.addEventListener('fleetcheck-auth-expired', onAuthExpired); return () => window.removeEventListener('fleetcheck-auth-expired', onAuthExpired) }, [])
+  useEffect(() => { Promise.all([restoreCompanySession(), restorePrivateSession()]); const onAuthExpired = () => setAuthVersion((version) => version + 1); window.addEventListener('fleetcheck-auth-expired', onAuthExpired); return () => window.removeEventListener('fleetcheck-auth-expired', onAuthExpired) }, [])
   return (
     <LanguageProvider>
       <BrowserRouter>
@@ -39,6 +40,8 @@ function App() {
           <Route path="/" element={<Welcome />} />
           <Route path="/vehicle/:vehicleId" element={<DriverCheckIn />} />
           <Route path="/home" element={<HomeRoute />} />
+          <Route path="/private/auth" element={<PrivateAuth />} />
+          <Route path="/private/register" element={<PrivateAuth register />} />
           <Route path="/company" element={<CompanyEntry />} />
           <Route path="/company/check" element={<DriverManualEntry />} />
           <Route path="/company/check/:vehicleId" element={<CompanyVehicleCheck />} />

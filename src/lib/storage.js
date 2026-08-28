@@ -5,6 +5,7 @@ const VEHICLES_KEY = 'fleetcheck_vehicles'
 const DRIVER_SESSION_KEY = 'fleetcheck_checkin'
 const ADMIN_SESSION_KEY = 'fleetcheck_admin'
 const COMPANY_SESSION_KEY = 'fleetcheck_company'
+const PRIVATE_SESSION_KEY = 'fleetcheck_private'
 const COMPANY_PROFILE_KEY = 'fleetcheck_company_profile'
 const NOTIFICATIONS_KEY = 'fleetcheck_notifications'
 
@@ -56,6 +57,9 @@ export const hasAdminSession = () => localStorage.getItem(ADMIN_SESSION_KEY) ===
 export const getCompanySession = () => JSON.parse(localStorage.getItem(COMPANY_SESSION_KEY) || 'null')
 export const saveCompanySession = (session) => { localStorage.setItem(COMPANY_PROFILE_KEY, JSON.stringify(session)); localStorage.setItem(COMPANY_SESSION_KEY, JSON.stringify(session)) }
 export const clearCompanySession = () => localStorage.removeItem(COMPANY_SESSION_KEY)
+export const getPrivateSession = () => JSON.parse(localStorage.getItem(PRIVATE_SESSION_KEY) || 'null')
+export const savePrivateSession = (session) => localStorage.setItem(PRIVATE_SESSION_KEY, JSON.stringify(session))
+export const clearPrivateSession = () => localStorage.removeItem(PRIVATE_SESSION_KEY)
 export const createReportDate = () => { const now = new Date(); return { date: now.toLocaleDateString(), time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), timestamp: now.toISOString() } }
 
 export const saveCheckIn = saveDriverSession
