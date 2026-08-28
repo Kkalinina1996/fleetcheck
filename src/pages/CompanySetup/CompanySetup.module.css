@@ -1,6 +1,6 @@
 .page { min-height: 100vh; background: #eef3f7; }
 .main { display: grid; min-height: calc(100vh - 70px); padding: 30px 20px 50px; place-items: center; }
-.card, .success { width: min(100%, 590px); padding: clamp(28px, 6vw, 46px); border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
+.card, .success { box-sizing: border-box; width: min(100%, 590px); max-width: 590px; padding: clamp(28px, 6vw, 46px); border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
 .card h1, .success h1, .success h2 { margin: 0; color: #102a43; letter-spacing: -.04em; }
 .card h1, .success h1 { font-size: clamp(30px, 5vw, 43px); }
 .subtitle { margin: 13px 0 0; color: #64748b; font-size: 18px; line-height: 1.5; }
@@ -18,8 +18,9 @@
 .success h2 { margin-top: 22px; font-size: 25px; }
 .plate { margin: 8px 0 20px; color: #08734f; font-size: 21px; font-weight: 900; letter-spacing: .04em; }
 .success > p:not(.plate) { margin: 0; color: #64748b; line-height: 1.5; }
-.successActions { display: grid; gap: 11px; margin-top: 30px; }
+.successActions { display: grid; width: 100%; min-width: 0; gap: 12px; margin-top: 30px; }
+.successActions button { box-sizing: border-box; width: 100%; min-width: 0; overflow-wrap: anywhere; white-space: normal; line-height: 1.25; }
 .secondary { border: 2px solid #19a974; background: #fff; color: #0d865a; }
 .back { margin-bottom:20px;border:0;background:transparent;color:#0d7650;font-weight:900;text-align:left; }
-@media (min-width: 620px) { .successActions { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .successActions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 @media (max-width: 420px) { .main { padding: 20px 15px 40px; }.card, .success { border-radius: 18px; } }

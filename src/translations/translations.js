@@ -106,4 +106,14 @@ Object.assign(de, { noVehiclesAdded: 'Noch keine Fahrzeuge hinzugefügt.', addFi
 Object.assign(ru, { noVehiclesAdded: 'Автомобили еще не добавлены.', addFirstVehicleWhenReady: 'Добавьте первый автомобиль, когда будете готовы.', backToCompanyHome: 'Назад на главную компании', goToCompanyHome: 'НА ГЛАВНУЮ КОМПАНИИ' })
 Object.assign(lv, { noVehiclesAdded: 'Vēl nav pievienotu transportlīdzekļu.', addFirstVehicleWhenReady: 'Pievienojiet pirmo transportlīdzekli, kad esat gatavs.', backToCompanyHome: 'Atpakaļ uz uzņēmuma sākumlapu', goToCompanyHome: 'UZ UZŅĒMUMA SĀKUMLAPU' })
 
+Object.assign(en, { serverConnectionFailed: 'Could not connect to the server. Please try again.' })
+Object.assign(de, { serverConnectionFailed: 'Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es erneut.' })
+Object.assign(ru, { serverConnectionFailed: 'Не удалось подключиться к серверу. Пожалуйста, попробуйте еще раз.' })
+Object.assign(lv, { serverConnectionFailed: 'Neizdevās savienoties ar serveri. Lūdzu, mēģiniet vēlreiz.' })
+
+Object.assign(en, { enterVehicleBrand: 'Enter vehicle brand' })
+Object.assign(de, { enterVehicleBrand: 'Fahrzeugmarke eingeben' })
+Object.assign(ru, { enterVehicleBrand: 'Введите марку автомобиля' })
+Object.assign(lv, { enterVehicleBrand: 'Ievadiet transportlīdzekļa marku' })
+
 export const translations = { de, en, ru, lv }
