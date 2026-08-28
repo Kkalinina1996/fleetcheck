@@ -22,14 +22,17 @@ dashboardRoutes.get('/', requireAuth, requireCompanyAdmin, async (req, res, next
 
     const activeStatuses = new Set(['OPEN', 'IN_REPAIR'])
     const activeReports = allReportsResult.data.filter((report) => report.type === 'ISSUE' && activeStatuses.has(report.status))
-    const affectedVehicleIds = new Set(activeReports.map((report) => report.vehicle_id))
+    const urgentVehicleIds = new Set(activeReports.filter((report) => report.priority === 'URGENT').map((report) => report.vehicle_id))
+    const attentionVehicleIds = new Set(activeReports.filter((report) => report.priority !== 'URGENT').map((report) => report.vehicle_id))
+    urgentVehicleIds.forEach((vehicleId) => attentionVehicleIds.delete(vehicleId))
+    const affectedVehicleIds = new Set([...urgentVehicleIds, ...attentionVehicleIds])
     return res.json({
       company: req.companyMembership.companies,
       stats: {
         totalVehicles: vehiclesResult.data.length,
         vehiclesOk: vehiclesResult.data.length - affectedVehicleIds.size,
-        needAttention: activeReports.filter((report) => report.priority !== 'URGENT').length,
-        urgent: activeReports.filter((report) => report.priority === 'URGENT').length,
+        needAttention: attentionVehicleIds.size,
+        urgent: urgentVehicleIds.size,
         unreadNotifications: notificationsResult.data.length,
       },
       recentReports: recentReportsResult.data,
