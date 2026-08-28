@@ -7,8 +7,9 @@ import { requireCompanyAdmin, requireCompanyMember } from '../services/companyAc
 import { getSupabaseAdminClient } from '../config/supabase.js'
 
 const reportRoutes = Router()
-const issueTypes = new Set(['TIRE', 'FUEL', 'ADBLUE', 'OIL_SERVICE', 'LIGHTS', 'DAMAGE', 'WARNING_LIGHT', 'ACCIDENT', 'OTHER'])
+const issueTypes = new Set(['TIRE', 'FUEL', 'ADBLUE', 'OIL_SERVICE', 'LIGHTS', 'DAMAGE', 'WARNING_LIGHT', 'ACCIDENT', 'OTHER', 'TIRES_WHEELS', 'ENGINE', 'BRAKES', 'BODY_DAMAGE', 'INTERIOR', 'FLUID_OIL'])
 const statuses = new Set(['OPEN', 'IN_REPAIR', 'RESOLVED'])
+const priorities = new Set(['ATTENTION', 'URGENT'])
 const mediaRules = {
   'image/jpeg': { extension: 'jpg', maxBytes: 10 * 1024 * 1024 },
   'image/png': { extension: 'png', maxBytes: 10 * 1024 * 1024 },
@@ -72,11 +73,13 @@ reportRoutes.get('/:id/media', requireAuth, requireCompanyMember, async (req, re
 })
 
 reportRoutes.post('/', requireAuth, requireCompanyMember, async (req, res, next) => {
-  const { id, vehicleId, employeeName, type, issueType, description, mediaType, mediaPath } = req.body || {}
+  const { id, vehicleId, employeeName, type, issueType, description, priority, mediaType, mediaPath } = req.body || {}
   const normalizedType = typeof type === 'string' ? type.toUpperCase() : ''
   const normalizedIssueType = typeof issueType === 'string' ? issueType.toUpperCase() : null
+  const normalizedPriority = typeof priority === 'string' ? priority.toUpperCase() : null
   if (!vehicleId || !['VEHICLE_OK', 'ISSUE'].includes(normalizedType)) return res.status(400).json({ error: 'Vehicle ID and report type are required' })
   if (normalizedType === 'ISSUE' && !issueTypes.has(normalizedIssueType)) return res.status(400).json({ error: 'A valid issue type is required' })
+  if (normalizedType === 'ISSUE' && normalizedPriority && !priorities.has(normalizedPriority)) return res.status(400).json({ error: 'Priority must be ATTENTION or URGENT' })
   if (mediaType && !['image', 'video'].includes(mediaType)) return res.status(400).json({ error: 'Media type is invalid' })
   if (mediaPath && (typeof mediaPath !== 'string' || mediaPath.startsWith('data:'))) return res.status(400).json({ error: 'Media must be stored in approved storage' })
   if (id && (typeof id !== 'string' || !uuidPattern.test(id))) return res.status(400).json({ error: 'Report ID is invalid' })
@@ -84,7 +87,7 @@ reportRoutes.post('/', requireAuth, requireCompanyMember, async (req, res, next)
     const vehicle = await getCompanyVehicle(vehicleId, req.companyMembership.company_id)
     if (!vehicle) return res.status(404).json({ error: 'Vehicle not found' })
     if (mediaPath && (!id || !mediaPath.startsWith(`${vehicle.company_id}/${vehicle.id}/${id}/`))) return res.status(400).json({ error: 'Media path does not belong to this report' })
-    const reportPayload = { ...(id ? { id } : {}), company_id: vehicle.company_id, vehicle_id: vehicle.id, created_by: req.user.id, employee_name: employeeName?.trim() || null, type: normalizedType, issue_type: normalizedType === 'ISSUE' ? normalizedIssueType : null, description: description?.trim() || null, status: normalizedType === 'ISSUE' ? 'OPEN' : 'OK', media_type: mediaType || null, media_path: mediaPath || null }
+    const reportPayload = { ...(id ? { id } : {}), company_id: vehicle.company_id, vehicle_id: vehicle.id, created_by: req.user.id, employee_name: employeeName?.trim() || null, type: normalizedType, issue_type: normalizedType === 'ISSUE' ? normalizedIssueType : null, description: description?.trim() || null, priority: normalizedType === 'ISSUE' ? normalizedPriority || 'ATTENTION' : null, status: normalizedType === 'ISSUE' ? 'OPEN' : 'OK', media_type: mediaType || null, media_path: mediaPath || null }
     const { data: report, error: reportError } = await getSupabaseAdminClient().from('reports').insert(reportPayload).select('*').single()
     if (reportError) throw reportError
     if (normalizedType === 'ISSUE') {

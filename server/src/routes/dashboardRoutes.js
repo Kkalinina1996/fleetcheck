@@ -11,7 +11,7 @@ dashboardRoutes.get('/', requireAuth, requireCompanyAdmin, async (req, res, next
     const supabase = getSupabaseAdminClient()
     const [vehiclesResult, allReportsResult, recentReportsResult, notificationsResult] = await Promise.all([
       supabase.from('vehicles').select('id').eq('company_id', companyId),
-      supabase.from('reports').select('vehicle_id, type, status').eq('company_id', companyId),
+      supabase.from('reports').select('vehicle_id, type, status, priority').eq('company_id', companyId),
       supabase.from('reports').select('*').eq('company_id', companyId).order('created_at', { ascending: false }).limit(10),
       supabase.from('notifications').select('id').eq('company_id', companyId).eq('is_read', false),
     ])
@@ -28,8 +28,8 @@ dashboardRoutes.get('/', requireAuth, requireCompanyAdmin, async (req, res, next
       stats: {
         totalVehicles: vehiclesResult.data.length,
         vehiclesOk: vehiclesResult.data.length - affectedVehicleIds.size,
-        needAttention: affectedVehicleIds.size,
-        urgent: activeReports.filter((report) => report.status === 'OPEN').length,
+        needAttention: activeReports.filter((report) => report.priority !== 'URGENT').length,
+        urgent: activeReports.filter((report) => report.priority === 'URGENT').length,
         unreadNotifications: notificationsResult.data.length,
       },
       recentReports: recentReportsResult.data,

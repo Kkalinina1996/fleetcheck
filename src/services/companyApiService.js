@@ -2,14 +2,15 @@ import { apiRequest } from './apiClient'
 
 const issueTypeMap = {
   tire: 'TIRE', fuel: 'FUEL', adBlue: 'ADBLUE', oilService: 'OIL_SERVICE', lights: 'LIGHTS',
-  damage: 'DAMAGE', warningLight: 'WARNING_LIGHT', accident: 'ACCIDENT', other: 'OTHER',
+  damage: 'DAMAGE', warningLight: 'WARNING_LIGHT', accident: 'ACCIDENT', other: 'OTHER', tiresWheels: 'TIRES_WHEELS',
+  engine: 'ENGINE', brakes: 'BRAKES', bodyDamage: 'BODY_DAMAGE', interior: 'INTERIOR', fluidOil: 'FLUID_OIL',
 }
 
 const toVehicle = (vehicle) => ({ ...vehicle, companyId: vehicle.company_id, plateNumber: vehicle.plate_number, vehicleType: vehicle.vehicle_type, ownerType: vehicle.owner_type?.toLowerCase(), createdAt: vehicle.created_at, updatedAt: vehicle.updated_at })
 const toReport = (report) => {
   const createdAt = report.created_at
   const date = new Date(createdAt)
-  return { ...report, vehicleId: report.vehicle_id, companyId: report.company_id, employeeName: report.employee_name, issueType: report.issue_type?.toLowerCase(), mediaType: report.media_type, mediaPath: report.media_path, createdAt, date: date.toLocaleDateString(), time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+  return { ...report, vehicleId: report.vehicle_id, companyId: report.company_id, employeeName: report.employee_name, issueType: report.issue_type?.toLowerCase(), priority: report.priority?.toLowerCase(), mediaType: report.media_type, mediaPath: report.media_path, createdAt, date: date.toLocaleDateString(), time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
 }
 
 export async function getCompanyVehicles() {
@@ -60,6 +61,7 @@ export async function createCompanyReport(report, file = null) {
     employeeName: report.employeeName || '',
     type: report.type,
     issueType: issueTypeMap[report.issueType] || report.issueType,
+    priority: report.priority?.toUpperCase(),
     description: report.description || '',
   }
   const { report: created } = await apiRequest('/reports', { method: 'POST', body: JSON.stringify(payload) })
