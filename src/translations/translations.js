@@ -155,4 +155,9 @@ Object.assign(de,{upcomingReminders:'Anstehende Erinnerungen',overdueReminders:'
 Object.assign(ru,{upcomingReminders:'Предстоящие напоминания',overdueReminders:'Просроченные напоминания'})
 Object.assign(lv,{upcomingReminders:'Gaidāmie atgādinājumi',overdueReminders:'Nokavētie atgādinājumi'})
 
+Object.assign(en,{dueDate:'Due date',noReminders:'No reminders yet.'})
+Object.assign(de,{dueDate:'Fälligkeitsdatum',noReminders:'Noch keine Erinnerungen.'})
+Object.assign(ru,{dueDate:'Срок',noReminders:'Напоминаний пока нет.'})
+Object.assign(lv,{dueDate:'Termiņš',noReminders:'Vēl nav atgādinājumu.'})
+
 export const translations = { de, en, ru, lv }

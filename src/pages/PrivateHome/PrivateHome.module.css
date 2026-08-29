@@ -5,6 +5,7 @@
 .intro h1 { font-size: clamp(32px, 5vw, 46px); }
 .intro p { margin: 11px 0 0; color: #64748b; font-size: 17px; line-height: 1.5; }
 .count { margin: 0 0 16px; color: #41627b; font-weight: 800; }
+.reminderStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:0 0 24px}.reminderStats a,.intro a{color:#08734f;text-decoration:none;font-weight:900}.reminderStats a{display:grid;gap:8px;padding:18px;border-radius:16px;background:#fff;box-shadow:0 10px 24px rgba(32,63,91,.09)}.reminderStats strong{color:#102a43;font-size:30px}
 .empty, .formCard, .vehicleCard { border-radius: 22px; background: #fff; box-shadow: 0 16px 38px rgba(32, 63, 91, .12); }
 .empty { display: grid; justify-items: center; gap: 25px; padding: clamp(36px, 8vw, 68px) 28px; }
 .emptyIcon { display: grid; width: 72px; height: 72px; place-items: center; border-radius: 20px; background: #e1f5ec; color: #0c8d60; font-size: 35px; font-weight: 900; }
