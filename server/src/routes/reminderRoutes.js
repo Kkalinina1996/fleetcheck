@@ -4,7 +4,7 @@ import { requireAuth } from '../middleware/authMiddleware.js'
 import { requireCompanyAdmin } from '../services/companyAccess.js'
 
 const reminderRoutes = Router()
-const types = new Set(['TUV', 'INSURANCE', 'SERVICE', 'OIL_CHANGE', 'TIRE_CHANGE', 'OTHER'])
+const types = new Set(['TECHNICAL_INSPECTION', 'INSURANCE', 'SERVICE', 'OIL_CHANGE', 'TIRE_CHANGE', 'OTHER'])
 const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
 
 const scope = (query, owner) => owner.companyId ? query.eq('company_id', owner.companyId) : query.is('company_id', null).eq('owner_user_id', owner.userId)

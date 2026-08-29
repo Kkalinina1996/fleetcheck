@@ -145,6 +145,10 @@ Object.assign(en,{calendar:'Calendar',reminders:'Reminders',tuv:'Technical inspe
 Object.assign(de,{calendar:'Kalender',reminders:'Erinnerungen',tuv:'Hauptuntersuchung',insurance:'Versicherung',service:'Service',oil_change:'Ölwechsel',tire_change:'Reifenwechsel',upcoming:'Anstehend',overdue:'Überfällig',completed:'Erledigt',note:'Notiz',addReminder:'Erinnerung hinzufügen',markCompleted:'Als erledigt markieren',delete:'Löschen'})
 Object.assign(ru,{calendar:'Календарь',reminders:'Напоминания',tuv:'Техосмотр',insurance:'Страховка',service:'Сервис',oil_change:'Замена масла',tire_change:'Замена шин',upcoming:'Предстоит',overdue:'Просрочено',completed:'Завершено',note:'Примечание',addReminder:'Добавить напоминание',markCompleted:'Отметить как завершенное',delete:'Удалить'})
 Object.assign(lv,{calendar:'Kalendārs',reminders:'Atgādinājumi',tuv:'Tehniskā apskate',insurance:'Apdrošināšana',service:'Serviss',oil_change:'Eļļas maiņa',tire_change:'Riepu maiņa',upcoming:'Gaidāms',overdue:'Nokavēts',completed:'Pabeigts',note:'Piezīme',addReminder:'Pievienot atgādinājumu',markCompleted:'Atzīmēt kā pabeigtu',delete:'Dzēst'})
+Object.assign(en,{technical_inspection:'Technical inspection'})
+Object.assign(de,{technical_inspection:'Technische Inspektion'})
+Object.assign(ru,{technical_inspection:'Технический осмотр'})
+Object.assign(lv,{technical_inspection:'Tehniskā apskate'})
 
 Object.assign(en,{upcomingReminders:'Upcoming reminders',overdueReminders:'Overdue reminders'})
 Object.assign(de,{upcomingReminders:'Anstehende Erinnerungen',overdueReminders:'Überfällige Erinnerungen'})
