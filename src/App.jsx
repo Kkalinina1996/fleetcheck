@@ -20,6 +20,7 @@ import PrivateHome from './pages/PrivateHome/PrivateHome'
 import PrivateHistory from './pages/PrivateHistory/PrivateHistory'
 import PrivateVehicleOk from './pages/PrivateVehicleOk/PrivateVehicleOk'
 import PrivateAuth from './pages/PrivateAuth/PrivateAuth'
+import PublicVehicleAccess from './pages/PublicVehicleAccess/PublicVehicleAccess'
 import Calendar from './pages/Calendar/Calendar'
 import ReportIssue from './pages/ReportIssue/ReportIssue'
 import VehicleCheck from './pages/VehicleCheck/VehicleCheck'
@@ -39,6 +40,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Welcome />} />
+          <Route path="/v/:token" element={<PublicVehicleAccess />} />
           <Route path="/vehicle/:vehicleId" element={<DriverCheckIn />} />
           <Route path="/home" element={<HomeRoute />} />
           <Route path="/private/auth" element={<PrivateAuth />} />

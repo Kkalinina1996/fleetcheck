@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import { useLanguage } from '../../context/LanguageContext'
 import { apiRequest } from '../../services/apiClient'
@@ -19,6 +19,9 @@ const authErrorKeys = {
 function PrivateAuth({ register = false }) {
   const { t } = useLanguage()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const qrToken = searchParams.get('qr')
+  const authLink = (path) => qrToken ? `${path}?qr=${encodeURIComponent(qrToken)}` : path
   const [form, setForm] = useState({ fullName: '', email: '', password: '', confirmPassword: '' })
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -37,11 +40,11 @@ function PrivateAuth({ register = false }) {
         throw new Error('privateAccountRequired')
       }
       saveAuthenticatedPrivateSession({ ...identity, session: login.session })
-      navigate('/home?mode=private')
+      navigate(qrToken ? `/v/${encodeURIComponent(qrToken)}` : '/home?mode=private')
     } catch (requestError) { setError(t(authErrorKeys[requestError.message] || 'privateAuthenticationFailed')) } finally { setSubmitting(false) }
   }
-  if (isPrivateLoggedIn()) return <Navigate to="/home?mode=private" replace />
-  return <div className={styles.page}><Header /><main className={styles.main}><form className={styles.card} onSubmit={submit}><p className={styles.kicker}>{t('privateRole')}</p><h1>{t(register ? 'createPrivateAccount' : 'privateSignIn')}</h1>{register && <label>{t('yourName')}<input required value={form.fullName} onChange={(event) => update('fullName', event.target.value)} autoComplete="name" /></label>}<label>{t('email')}<input required type="email" value={form.email} onChange={(event) => update('email', event.target.value)} autoComplete="email" /></label><label>{t('password')}<input required minLength="8" type="password" value={form.password} onChange={(event) => update('password', event.target.value)} autoComplete={register ? 'new-password' : 'current-password'} /></label>{register && <label>{t('confirmPassword')}<input required minLength="8" type="password" value={form.confirmPassword} onChange={(event) => update('confirmPassword', event.target.value)} autoComplete="new-password" /></label>}{error && <p className={styles.error} role="alert">{error}</p>}<button type="submit" disabled={submitting}>{t(register ? 'createAccount' : 'signIn')}</button><Link to={register ? '/private/auth' : '/private/register'}>{t(register ? 'alreadyHaveAccount' : 'createPrivateAccount')}</Link><Link className={styles.back} to="/">{t('backToFleetCheck')}</Link></form></main></div>
+  if (isPrivateLoggedIn()) return <Navigate to={qrToken ? `/v/${encodeURIComponent(qrToken)}` : '/home?mode=private'} replace />
+  return <div className={styles.page}><Header /><main className={styles.main}><form className={styles.card} onSubmit={submit}><p className={styles.kicker}>{t('privateRole')}</p><h1>{t(register ? 'createPrivateAccount' : 'privateSignIn')}</h1>{register && <label>{t('yourName')}<input required value={form.fullName} onChange={(event) => update('fullName', event.target.value)} autoComplete="name" /></label>}<label>{t('email')}<input required type="email" value={form.email} onChange={(event) => update('email', event.target.value)} autoComplete="email" /></label><label>{t('password')}<input required minLength="8" type="password" value={form.password} onChange={(event) => update('password', event.target.value)} autoComplete={register ? 'new-password' : 'current-password'} /></label>{register && <label>{t('confirmPassword')}<input required minLength="8" type="password" value={form.confirmPassword} onChange={(event) => update('confirmPassword', event.target.value)} autoComplete="new-password" /></label>}{error && <p className={styles.error} role="alert">{error}</p>}<button type="submit" disabled={submitting}>{t(register ? 'createAccount' : 'signIn')}</button><Link to={authLink(register ? '/private/auth' : '/private/register')}>{t(register ? 'alreadyHaveAccount' : 'createPrivateAccount')}</Link><Link className={styles.back} to="/">{t('backToFleetCheck')}</Link></form></main></div>
 }
 
 export default PrivateAuth
