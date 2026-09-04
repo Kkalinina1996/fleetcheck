@@ -5,7 +5,6 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import AdminLogin from './pages/AdminLogin/AdminLogin'
 import AdminVehicle from './pages/AdminVehicle/AdminVehicle'
 import DriverCheckIn from './pages/DriverCheckIn/DriverCheckIn'
-import DriverManualEntry from './pages/DriverManualEntry/DriverManualEntry'
 import KnownIssues from './pages/KnownIssues/KnownIssues'
 import CompanyHome from './pages/CompanyHome/CompanyHome'
 import CompanyEntry from './pages/CompanyEntry/CompanyEntry'
@@ -20,6 +19,10 @@ import PrivateHome from './pages/PrivateHome/PrivateHome'
 import PrivateHistory from './pages/PrivateHistory/PrivateHistory'
 import PrivateVehicleOk from './pages/PrivateVehicleOk/PrivateVehicleOk'
 import PrivateAuth from './pages/PrivateAuth/PrivateAuth'
+import DriverLogin from './pages/DriverLogin/DriverLogin'
+import CompanyDriverHome from './pages/CompanyDriverHome/CompanyDriverHome'
+import CompanySelect from './pages/CompanySelect/CompanySelect'
+import EmployeeManagement from './pages/EmployeeManagement/EmployeeManagement'
 import PublicVehicleAccess from './pages/PublicVehicleAccess/PublicVehicleAccess'
 import Calendar from './pages/Calendar/Calendar'
 import ReportIssue from './pages/ReportIssue/ReportIssue'
@@ -48,7 +51,10 @@ function App() {
           <Route path="/private/calendar" element={<Calendar mode="private" />} />
           <Route path="/company/calendar" element={<Calendar mode="company" />} />
           <Route path="/company" element={<CompanyEntry />} />
-          <Route path="/company/check" element={<DriverManualEntry />} />
+          <Route path="/company/check" element={<DriverLogin />} />
+          <Route path="/company/driver/login" element={<DriverLogin />} />
+          <Route path="/company/driver" element={<CompanyDriverHome />} />
+          <Route path="/company/select" element={<CompanySelect />} />
           <Route path="/company/check/:vehicleId" element={<CompanyVehicleCheck />} />
           <Route path="/company/check/:vehicleId/report" element={<CompanyReportIssue />} />
           <Route path="/company/register" element={<CompanyRegister />} />
@@ -56,6 +62,7 @@ function App() {
           <Route path="/company/home" element={<CompanyHome />} />
           <Route path="/company/vehicles" element={<CompanyVehicles />} />
           <Route path="/company/reports" element={<CompanyReports />} />
+          <Route path="/company/employees" element={<EmployeeManagement />} />
           <Route path="/driver" element={<Navigate to="/home" replace />} />
           <Route path="/vehicle/:vehicleId/check" element={<VehicleCheck />} />
           <Route path="/vehicle/:vehicleId/report" element={<ReportIssue />} />

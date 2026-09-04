@@ -5,15 +5,15 @@ import { useLanguage } from '../../context/LanguageContext'
 import { getCompanyVehicles } from '../../services/companyApiService'
 import { getPrivateVehicles } from '../../services/privateApiService'
 import { completeReminder, createReminder, deleteReminder, getReminders } from '../../services/reminderService'
-import { isCompanyLoggedIn, isPrivateLoggedIn } from '../../services/sessionService'
+import { isCompanyAdmin, isPrivateLoggedIn } from '../../services/sessionService'
 import styles from './Calendar.module.css'
 
 const types = ['TECHNICAL_INSPECTION', 'INSURANCE', 'SERVICE', 'OIL_CHANGE', 'TIRE_CHANGE', 'OTHER']
 function Calendar({ mode }) {
-  const { t } = useLanguage(); const privateMode = mode === 'private'; const allowed = privateMode ? isPrivateLoggedIn() : isCompanyLoggedIn(); const [vehicles, setVehicles] = useState([]); const [items, setItems] = useState([]); const [form, setForm] = useState({ vehicleId: '', reminderType: 'TECHNICAL_INSPECTION', dueDate: '', note: '' })
+  const { t } = useLanguage(); const privateMode = mode === 'private'; const allowed = privateMode ? isPrivateLoggedIn() : isCompanyAdmin(); const [vehicles, setVehicles] = useState([]); const [items, setItems] = useState([]); const [form, setForm] = useState({ vehicleId: '', reminderType: 'TECHNICAL_INSPECTION', dueDate: '', note: '' })
   const load = () => Promise.all([privateMode ? getPrivateVehicles() : getCompanyVehicles(), getReminders(mode)]).then(([loadedVehicles, reminders]) => { setVehicles(loadedVehicles); setItems(reminders) })
   useEffect(() => { if (allowed) Promise.all([privateMode ? getPrivateVehicles() : getCompanyVehicles(), getReminders(mode)]).then(([loadedVehicles, reminders]) => { setVehicles(loadedVehicles); setItems(reminders) }) }, [allowed, mode, privateMode])
-  if (!allowed) return <Navigate to={privateMode ? '/private/auth' : '/admin'} replace />
+  if (!allowed) return <Navigate to={privateMode ? '/private/auth' : '/company/driver'} replace />
   const isOverdue = (item) => item.status !== 'COMPLETED' && item.due_date < new Date().toISOString().slice(0, 10)
   const submit = async (event) => { event.preventDefault(); await createReminder(mode, form); setForm({ vehicleId: '', reminderType: 'TECHNICAL_INSPECTION', dueDate: '', note: '' }); load() }
   const status = (item) => item.status === 'COMPLETED' ? 'completed' : isOverdue(item) ? 'overdue' : 'upcoming'

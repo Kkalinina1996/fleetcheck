@@ -14,11 +14,22 @@ function getAccessToken() {
   }
 }
 
+function getActiveCompanyId() {
+  try {
+    const session = JSON.parse(localStorage.getItem(COMPANY_SESSION_KEY) || 'null')
+    return session?.activeCompanyId || session?.companyId || null
+  } catch {
+    return null
+  }
+}
+
 export async function apiRequest(path, options = {}) {
   if (!API_URL) throw new Error('serverConnectionFailed')
   const token = getAccessToken()
   const headers = new Headers(options.headers)
   if (token) headers.set('Authorization', `Bearer ${token}`)
+  const companyId = getActiveCompanyId()
+  if (companyId && !headers.has('X-Company-Id')) headers.set('X-Company-Id', companyId)
   if (options.body && !headers.has('Content-Type') && !(options.body instanceof Blob)) headers.set('Content-Type', 'application/json')
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)

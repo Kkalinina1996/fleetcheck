@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import { errorHandler, notFoundHandler } from './src/middleware/errorHandler.js'
 import authRoutes from './src/routes/authRoutes.js'
 import dashboardRoutes from './src/routes/dashboardRoutes.js'
+import employeeRoutes from './src/routes/employeeRoutes.js'
 import healthRoutes from './src/routes/healthRoutes.js'
 import notificationRoutes from './src/routes/notificationRoutes.js'
 import privateRoutes from './src/routes/privateRoutes.js'
@@ -27,7 +28,7 @@ app.use(cors({
     return callback(new Error('Origin is not allowed by CORS'))
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Authorization', 'Content-Type', 'X-Vehicle-Id', 'X-Report-Id'],
+  allowedHeaders: ['Authorization', 'Content-Type', 'X-Vehicle-Id', 'X-Report-Id', 'X-Company-Id'],
 }))
 app.use(express.json())
 app.use('/api/health', healthRoutes)
@@ -39,6 +40,7 @@ app.use('/api/private', privateRoutes)
 app.use('/api/reminders', reminderRoutes)
 app.use('/api/qr', qrAccessRoutes)
 app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/company/employees', employeeRoutes)
 app.use(notFoundHandler)
 app.use(errorHandler)
 

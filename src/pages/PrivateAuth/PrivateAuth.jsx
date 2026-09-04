@@ -35,7 +35,7 @@ function PrivateAuth({ register = false }) {
       const login = await apiRequest('/auth/login', { method: 'POST', body: JSON.stringify({ email: form.email, password: form.password }) })
       saveAuthenticatedPrivateSession({ user: login.user, session: login.session })
       const identity = await apiRequest('/auth/me')
-      if (identity.company) {
+      if (identity.memberships?.length) {
         clearPrivateSession()
         throw new Error('privateAccountRequired')
       }

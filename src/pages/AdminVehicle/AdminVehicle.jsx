@@ -6,7 +6,7 @@ import VehicleNotFound from '../../components/VehicleNotFound/VehicleNotFound'
 import { useLanguage } from '../../context/LanguageContext'
 import { getCompanyReportMediaUrl, getVehicleHistory, updateCompanyReportStatus } from '../../services/companyApiService'
 import { generateCompanyQrAccess, revokeCompanyQrAccess } from '../../services/qrAccessService'
-import { isCompanyLoggedIn } from '../../services/sessionService'
+import { isCompanyAdmin } from '../../services/sessionService'
 import styles from './AdminVehicle.module.css'
 
 const statusKey = (status) => status === 'IN_REPAIR' ? 'inRepair' : status?.toLowerCase()
@@ -28,9 +28,9 @@ function AdminVehicle() {
 
   const load = () => loadVehicleHistory(vehicleId, setData, setQrToken)
 
-  useEffect(() => { loadVehicleHistory(vehicleId, setData, setQrToken) }, [vehicleId])
+  useEffect(() => { if (isCompanyAdmin()) loadVehicleHistory(vehicleId, setData, setQrToken) }, [vehicleId])
 
-  if (!isCompanyLoggedIn()) return <Navigate to="/admin" replace />
+  if (!isCompanyAdmin()) return <Navigate to="/company/driver" replace />
   if (data === false) return <VehicleNotFound />
   if (!data) return null
 

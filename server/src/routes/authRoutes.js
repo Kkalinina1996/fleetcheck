@@ -155,19 +155,28 @@ authRoutes.post('/login', async (req, res, next) => {
 authRoutes.get('/me', requireAuth, async (req, res, next) => {
   try {
     const supabase = getSupabaseAdminClient()
+    const requestedCompanyId = req.get('x-company-id') || null
     const [{ data: profile, error: profileError }, { data: memberships, error: membershipError }] = await Promise.all([
       supabase.from('profiles').select('id, full_name, created_at').eq('id', req.user.id).maybeSingle(),
-      supabase.from('company_members').select('role, companies(id, name, phone)').eq('user_id', req.user.id).limit(1),
+      supabase.from('company_members').select('company_id, role, companies(id, name, phone)').eq('user_id', req.user.id),
     ])
     if (profileError) throw profileError
     if (membershipError) throw membershipError
 
-    const membership = memberships?.[0] || null
+    const availableMemberships = (memberships || []).map((membership) => ({
+      companyId: membership.company_id,
+      company: membership.companies,
+      role: membership.role,
+    }))
+    const membership = requestedCompanyId
+      ? availableMemberships.find((item) => item.companyId === requestedCompanyId) || null
+      : availableMemberships.length === 1 ? availableMemberships[0] : null
     return res.json({
       user: safeUser(req.user),
       profile: profile || null,
-      company: membership?.companies || null,
+      company: membership?.company || null,
       role: membership?.role || null,
+      memberships: availableMemberships,
     })
   } catch (error) {
     return next(error)

@@ -43,7 +43,7 @@ function PublicVehicleAccess() {
       <section className={styles.card} aria-live="polite">
         {state === 'loading' && <><span className={styles.spinner} aria-hidden="true" /><h1>{t('loading')}</h1></>}
         {state === 'notFound' && <><span className={styles.icon} aria-hidden="true">!</span><h1>{t('vehicleAccessNotFound')}</h1><p>{t('vehicleAccessNotFoundHint')}</p><Link className={styles.secondary} to="/">{t('backToFleetCheck')}</Link></>}
-        {state === 'signIn' && <><span className={styles.icon} aria-hidden="true">✓</span><h1>{t('vehicleAccessReady')}</h1><p>{t('vehicleAccessSignInHint')}</p><div className={styles.actions}><Link to={`/private/auth?qr=${encodeURIComponent(token)}`}>{t('privateSignIn')}</Link><Link className={styles.secondary} to={`/admin?qr=${encodeURIComponent(token)}`}>{t('companySignIn')}</Link></div></>}
+        {state === 'signIn' && <><span className={styles.icon} aria-hidden="true">✓</span><h1>{t('vehicleAccessReady')}</h1><p>{t('vehicleAccessSignInHint')}</p><div className={styles.actions}><Link to={`/company/driver/login?qr=${encodeURIComponent(token)}`}>{t('driverSignIn')}</Link><Link className={styles.secondary} to={`/admin?qr=${encodeURIComponent(token)}`}>{t('companyAdminSignIn')}</Link><Link className={styles.secondary} to={`/private/auth?qr=${encodeURIComponent(token)}`}>{t('privateSignIn')}</Link></div></>}
       </section>
     </main>
   </div>

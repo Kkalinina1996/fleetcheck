@@ -10,9 +10,38 @@ export const loginAdmin = () => setAdminSession()
 export const logoutAdmin = () => clearAdminSession()
 export const getCompanySession = () => getStoredCompanySession()
 export const saveCompanySession = (session) => saveStoredCompanySession(session)
-export const saveAuthenticatedCompanySession = ({ user, profile, company, role, session }) => { clearStoredPrivateSession(); saveStoredCompanySession({ companyId: company?.id, companyName: company?.name, user, profile, role, accessToken: session?.accessToken, refreshToken: session?.refreshToken, expiresAt: session?.expiresAt }) }
+export const getCompanyMemberships = () => getStoredCompanySession()?.memberships || []
+export const getActiveCompanyId = () => getStoredCompanySession()?.activeCompanyId || getStoredCompanySession()?.companyId || null
+export const hasCompanyAuthentication = () => Boolean(getStoredCompanySession()?.user?.id && getStoredCompanySession()?.accessToken)
+export const isCompanyLoggedIn = () => Boolean(hasCompanyAuthentication() && getActiveCompanyId())
+export const isCompanyAdmin = () => isCompanyLoggedIn() && getStoredCompanySession()?.role === 'COMPANY_ADMIN'
+export const isCompanyEmployee = () => isCompanyLoggedIn() && getStoredCompanySession()?.role === 'EMPLOYEE'
+export const saveAuthenticatedCompanySession = ({ user, profile, company, role, memberships, session }) => {
+  clearStoredPrivateSession()
+  const availableMemberships = memberships || (company ? [{ companyId: company.id, company, role }] : [])
+  const activeCompanyId = company?.id || (availableMemberships.length === 1 ? availableMemberships[0].companyId : null)
+  const activeMembership = availableMemberships.find((membership) => membership.companyId === activeCompanyId)
+  saveStoredCompanySession({
+    companyId: activeCompanyId,
+    activeCompanyId,
+    companyName: activeMembership?.company?.name || company?.name || null,
+    user,
+    profile,
+    role: activeMembership?.role || role || null,
+    memberships: availableMemberships,
+    accessToken: session?.accessToken,
+    refreshToken: session?.refreshToken,
+    expiresAt: session?.expiresAt,
+  })
+}
+export const selectActiveCompany = (companyId) => {
+  const session = getStoredCompanySession()
+  const membership = session?.memberships?.find((item) => item.companyId === companyId)
+  if (!session || !membership) return false
+  saveStoredCompanySession({ ...session, companyId, activeCompanyId: companyId, companyName: membership.company?.name || null, role: membership.role })
+  return true
+}
 export const clearCompanySession = () => { clearAdminSession(); clearStoredCompanySession() }
-export const isCompanyLoggedIn = () => Boolean(getStoredCompanySession()?.companyId || getStoredCompanySession()?.id)
 export async function restoreCompanySession() {
   const session = getStoredCompanySession()
   if (!session?.accessToken) return null
@@ -35,7 +64,7 @@ export async function restorePrivateSession() {
   if (!session?.accessToken) return null
   try {
     const data = await apiRequest('/auth/me')
-    if (data.company) throw new Error('Company session')
+    if (data.memberships?.length) throw new Error('Company session')
     saveAuthenticatedPrivateSession({ ...data, session })
     return data
   } catch {
